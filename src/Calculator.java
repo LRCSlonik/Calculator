@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Calculator {
@@ -9,7 +10,7 @@ public class Calculator {
         System.out.print(calc(exp));
     }
 
-    public static String calc (String input) {
+    public static String calc(String input) {
         Converter converter = new Converter();
 
         String[] action = {"+", "-", "/", "*"};
@@ -23,19 +24,30 @@ public class Calculator {
             }
         }
         if (actionIndex == -1) {
-            System.out.println("Используйте арифметическое выражение");
+            try {
+                throw new IOException();
+            } catch (IOException e) {
+                System.out.println("Используйте арифметическое выражение");
+            }
             return "error";
         }
         String[] data = input.split(regAction[actionIndex]);
-        if (converter.isRoman(data[0]) == converter.isRoman(data[1])){
-            int a,b;
+        if (converter.isRoman(data[0]) == converter.isRoman(data[1])) {
+            int a, b;
             boolean isRoman = converter.isRoman(data[0]);
-            if(isRoman){
+            if (isRoman) {
                 a = converter.romanToInt(data[0]);
                 b = converter.romanToInt(data[1]);
-            }else {
+            } else {
                 a = Integer.parseInt(data[0]);
                 b = Integer.parseInt(data[1]);
+            }
+            if ((a > 10) || (b > 10)) {
+                try {
+                    throw new IOException();
+                } catch (IOException e) {
+                    System.out.println("Используйте числа меньше 10");
+                } return "error";
             }
 
             int result = switch (action[actionIndex]) {
@@ -45,15 +57,20 @@ public class Calculator {
                 default -> a / b;
             };
 
-            if (isRoman){
+            if (isRoman) {
                 return converter.intToRoman(result);
-            }else{
+            } else {
                 return String.valueOf(result);
             }
-        }else {
-            System.out.println("Используйте числа одного вида");
+        } else {
+            try {
+                throw new IOException();
+            } catch (IOException e) {
+                System.out.println("Используйте числа одного формата");
+            }
         }
 
         return "error";
     }
 }
+
