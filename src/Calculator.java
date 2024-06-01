@@ -2,24 +2,31 @@ import java.util.Scanner;
 
 public class Calculator {
     public static void main(String[] args) {
-        Converter converter = new Converter();
-        String[] action = {"+", "-", "/", "*"};
-        String[] regAction = {"\\+", "-", "/", "\\*"};
         Scanner scn = new Scanner(System.in);
         System.out.print("Введите выражение: ");
         String exp = scn.nextLine();
+
+        System.out.print(calc(exp));
+    }
+
+    public static String calc (String input) {
+        Converter converter = new Converter();
+
+        String[] action = {"+", "-", "/", "*"};
+        String[] regAction = {"\\+", "-", "/", "\\*"};
+
         int actionIndex = -1;
         for (int i = 0; i < action.length; i++) {
-            if (exp.contains(action[i])) {
+            if (input.contains(action[i])) {
                 actionIndex = i;
                 break;
             }
         }
         if (actionIndex == -1) {
             System.out.println("Используйте арифметическое выражение");
-            return;
+            return "error";
         }
-        String[] data = exp.split(regAction[actionIndex]);
+        String[] data = input.split(regAction[actionIndex]);
         if (converter.isRoman(data[0]) == converter.isRoman(data[1])){
             int a,b;
             boolean isRoman = converter.isRoman(data[0]);
@@ -31,30 +38,22 @@ public class Calculator {
                 b = Integer.parseInt(data[1]);
             }
 
-            int result;
-            switch (action[actionIndex]) {
-                case "+":
-                    result = a+b;
-                    break;
-                case "-":
-                    result = a-b;
-                    break;
-                case "*":
-                    result = a*b;
-                    break;
-                default:
-                    result = a/b;
-                    break;
-            }
+            int result = switch (action[actionIndex]) {
+                case "+" -> a + b;
+                case "-" -> a - b;
+                case "*" -> a * b;
+                default -> a / b;
+            };
+
             if (isRoman){
-                System.out.println(converter.intToRoman(result));
+                return converter.intToRoman(result);
             }else{
-                System.out.println(result);
+                return String.valueOf(result);
             }
         }else {
             System.out.println("Используйте числа одного вида");
         }
 
-
+        return "error";
     }
 }
