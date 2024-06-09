@@ -16,6 +16,24 @@ public class Calculator {
         String[] action = {"+", "-", "/", "*"};
         String[] regAction = {"\\+", "-", "/", "\\*"};
 
+        int mycount = 0;
+        for (int i = 0; i < regAction.length; i++) {
+            String[] tmp = input.split(regAction[i]);
+
+            if (tmp.length == 2) mycount++;
+            else if (tmp.length > 2) mycount += (tmp.length - 1);
+        }
+
+        if (mycount > 1) {
+            try {
+                throw new IOException();
+            } catch (IOException e) {
+                System.out.println("Количество операций во входной строке больше одной!");
+            }
+
+            return "error";
+        }
+
         int actionIndex = -1;
         for (int i = 0; i < action.length; i++) {
             if (input.contains(action[i])) {
@@ -23,6 +41,7 @@ public class Calculator {
                 break;
             }
         }
+
         if (actionIndex == -1) {
             try {
                 throw new IOException();
@@ -31,10 +50,13 @@ public class Calculator {
             }
             return "error";
         }
+
         String[] data = input.split(regAction[actionIndex]);
+
         if (converter.isRoman(data[0]) == converter.isRoman(data[1])) {
             int a, b;
             boolean isRoman = converter.isRoman(data[0]);
+
             if (isRoman) {
                 a = converter.romanToInt(data[0]);
                 b = converter.romanToInt(data[1]);
@@ -42,6 +64,7 @@ public class Calculator {
                 a = Integer.parseInt(data[0]);
                 b = Integer.parseInt(data[1]);
             }
+
             if ((a > 10) || (b > 10)) {
                 try {
                     throw new IOException();
