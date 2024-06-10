@@ -1,8 +1,7 @@
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Calculator {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CalculatorException {
         Scanner scn = new Scanner(System.in);
         System.out.print("Введите выражение: ");
         String exp = scn.nextLine();
@@ -10,7 +9,7 @@ public class Calculator {
         System.out.print(calc(exp));
     }
 
-    public static String calc(String input) {
+    public static String calc(String input) throws CalculatorException {
         Converter converter = new Converter();
 
         String[] action = {"+", "-", "/", "*"};
@@ -25,13 +24,7 @@ public class Calculator {
         }
 
         if (mycount > 1) {
-            try {
-                throw new IOException();
-            } catch (IOException e) {
-                System.out.println("Количество операций во входной строке больше одной!");
-            }
-
-            return "error";
+            throw new CalculatorException("Используйте выражение только из двух чисел");
         }
 
         int actionIndex = -1;
@@ -43,12 +36,7 @@ public class Calculator {
         }
 
         if (actionIndex == -1) {
-            try {
-                throw new IOException();
-            } catch (IOException e) {
-                System.out.println("Используйте арифметическое выражение");
-            }
-            return "error";
+            throw new CalculatorException("Используйте арифметическое выражение");
         }
 
         String[] data = input.split(regAction[actionIndex]);
@@ -66,11 +54,7 @@ public class Calculator {
             }
 
             if ((a > 10) || (b > 10)) {
-                try {
-                    throw new IOException();
-                } catch (IOException e) {
-                    System.out.println("Используйте числа меньше 10");
-                } return "error";
+                throw new CalculatorException("Используйте числа меньше 10");
             }
 
             int result = switch (action[actionIndex]) {
@@ -86,14 +70,8 @@ public class Calculator {
                 return String.valueOf(result);
             }
         } else {
-            try {
-                throw new IOException();
-            } catch (IOException e) {
-                System.out.println("Используйте числа одного формата");
-            }
+            throw new CalculatorException("Используйте числа одного формата");
         }
-
-        return "error";
     }
 }
 
