@@ -63,12 +63,16 @@ public class Calculator {
                 case "*" -> a * b;
                 default -> a / b;
             };
-
+            
             if (isRoman) {
-                return converter.intToRoman(result);
+                if (result < 1) {
+                    throw new CalculatorException("В римской системе нет отрицательных чисел");
+                }
+                else return converter.intToRoman(result);
             } else {
                 return String.valueOf(result);
             }
+
         } else {
             throw new CalculatorException("Используйте числа одного формата");
         }
