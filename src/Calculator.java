@@ -1,3 +1,4 @@
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Calculator {
@@ -14,6 +15,9 @@ public class Calculator {
 
         String[] action = {"+", "-", "/", "*"};
         String[] regAction = {"\\+", "-", "/", "\\*"};
+        String[] rome = {"I","II","III","IV","V","VI","VII","VIII","IX","X",
+                "1","2","3","4","5","6","7","8","9","10"};
+
 
         int mycount = 0;
         for (int i = 0; i < regAction.length; i++) {
@@ -24,7 +28,7 @@ public class Calculator {
         }
 
         if (mycount > 1) {
-            throw new CalculatorException("Используйте выражение только из двух чисел");
+            throw new CalculatorException("формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
         }
 
         int actionIndex = -1;
@@ -36,10 +40,24 @@ public class Calculator {
         }
 
         if (actionIndex == -1) {
-            throw new CalculatorException("Используйте арифметическое выражение");
+            throw new CalculatorException("строка не является математической операцией");
         }
 
         String[] data = input.split(regAction[actionIndex]);
+
+       for (int j = 0; j < data.length; j++) {
+           boolean myFlag = false;
+
+           for (int i = 0; i < rome.length; i++) {
+               if (Objects.equals(data[j], rome[i])) {
+                   myFlag = true;
+                   break;
+               }
+           }
+           if (!myFlag) {
+               throw new CalculatorException("Используйте только Римские или Арабские числа от 1 до 10");
+           }
+       }
 
         if (converter.isRoman(data[0]) == converter.isRoman(data[1])) {
             int a, b;
@@ -54,7 +72,10 @@ public class Calculator {
             }
 
             if ((a > 10) || (b > 10)) {
-                throw new CalculatorException("Используйте числа меньше 10");
+                throw new CalculatorException("Используйте числа от 1 до 10");
+            }
+            if ((a < 1) || (b < 1)) {
+                throw new CalculatorException("Используйте числа от 1 до 10");
             }
 
             int result = switch (action[actionIndex]) {
@@ -74,7 +95,7 @@ public class Calculator {
             }
 
         } else {
-            throw new CalculatorException("Используйте числа одного формата");
+            throw new CalculatorException("используются одновременно разные системы счисления");
         }
     }
 }
