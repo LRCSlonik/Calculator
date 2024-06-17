@@ -23,8 +23,13 @@ public class Converter {
         arabianKeyMap.put(40, "XL");
         arabianKeyMap.put(10, "X");
         arabianKeyMap.put(9, "IX");
+        arabianKeyMap.put(8, "VIII");
+        arabianKeyMap.put(7, "VII");
+        arabianKeyMap.put(6, "VI");
         arabianKeyMap.put(5, "V");
         arabianKeyMap.put(4, "IV");
+        arabianKeyMap.put(3, "III");
+        arabianKeyMap.put(2, "II");
         arabianKeyMap.put(1, "I");
     }
 
